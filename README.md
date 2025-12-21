@@ -1,3 +1,6 @@
+[![CodeQL Advanced](https://github.com/M7tnj/preDiabet/actions/workflows/codeql.yml/badge.svg)](https://github.com/M7tnj/preDiabet/actions/workflows/codeql.yml)
+
+
 # preDiabet
 #### Video Demo:  <URL HERE>
 #### Description: 
