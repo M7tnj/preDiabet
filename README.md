@@ -1,4 +1,4 @@
-[![CodeQL Advanced](https://github.com/M7tnj/preDiabet/actions/workflows/codeql.yml/badge.svg)](https://github.com/M7tnj/preDiabet/actions/workflows/codeql.yml)
+[![CodeQL Advanced](https://github.com/M7tnj/preDiabet/actions/workflows/codeql.yml/badge.svg)](https://github.com/M7tnj/preDiabet/actions/workflows/codeql.yml) ![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white)
 
 
 # preDiabet
