@@ -1,4 +1,4 @@
-[![CodeQL Advanced](https://github.com/M7tnj/preDiabet/actions/workflows/codeql.yml/badge.svg)](https://github.com/M7tnj/preDiabet/actions/workflows/codeql.yml) ![Static Badge](https://img.shields.io/badge/R-%3E_4.0-green)
+[![CodeQL Advanced](https://github.com/M7tnj/preDiabet/actions/workflows/codeql.yml/badge.svg)](https://github.com/M7tnj/preDiabet/actions/workflows/codeql.yml) ![Static Badge](https://img.shields.io/badge/Python-%3E_3.4-blue)
 
 
 # preDiabet
