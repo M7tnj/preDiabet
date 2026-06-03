@@ -1,20 +1,26 @@
-import pandas as pd
-import os
 import requests
-import io
-from sklearn.model_selection import train_test_split
+import os
+import warnings
+import numpy as np
+import pandas as pd
+from datetime import datetime
+
+from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.impute import SimpleImputer
-from sklearn.pipeline import make_pipeline
-from sklearn.compose import make_column_transformer
-from tensorflow import keras
-from tensorflow.keras import layers
-import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score, f1_score,
+    roc_auc_score, roc_curve, confusion_matrix, classification_report,
+    average_precision_score
+)
 
 def main():
     downloader()
     model, X_train, y_train, X_valid, y_valid = preprocess()
-    if model is not None:  # Ensure the model and data are valid
+    if model is not None: 
         history_df = train_model(model, X_train, y_train, X_valid, y_valid)
         visualize(history_df)
 
@@ -25,8 +31,6 @@ def downloader(filename='diabet.csv'):
     response.raise_for_status() 
 
     diabetfile = pd.read_csv(io.StringIO(response.content.decode('utf-8')))
-    print("File downloaded and read successfully!")
-
     file_path = os.path.join(filename)
     diabetfile.to_csv(file_path, index=False)
 
