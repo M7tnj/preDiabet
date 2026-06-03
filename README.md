@@ -1,6 +1,6 @@
 <div align="center">
 
-# preDiabet: Diabetes Prediction
+# Diabetes Prediction
 
 **ML · Neural Networks · Attention-Based Architectures**
 
@@ -231,7 +231,7 @@ The radar chart reveals each top model's strength profile:
 #### Feature Importance
 
 <div align="center">
-<img src="readme_feature_importance.png" width="800">
+<img src="assets/readme_feature_importance.png" width="800">
 </div>
 
 Across all three ensemble models, **Glucose dominates** as the most important feature (25-28% importance), followed by **BMI** (16-17%) and **Age** (13-14%). The engineered interaction features `Glucose×BMI` and `Insulin/Glucose` also contribute meaningfully, validating the clinical hypothesis that feature interactions carry predictive signal beyond individual measurements.
