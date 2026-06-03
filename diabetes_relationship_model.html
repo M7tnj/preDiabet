@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Diabetes Feature Relationship Model</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #F8FAFC; font-family: 'Segoe UI', system-ui, sans-serif; }
+  #chart { width: 1200px; height: 900px; margin: 0 auto; }
+  #legend-info {
+    max-width: 1200px; margin: 0 auto; padding: 0 40px 40px;
+    display: flex; gap: 32px; flex-wrap: wrap;
+  }
+  .legend-card {
+    background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;
+    padding: 16px 20px; flex: 1; min-width: 240px;
+  }
+  .legend-card h4 { font-size: 13px; color: #6B7280; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: 13px; color: #374151; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .legend-line { width: 32px; height: 0; flex-shrink: 0; }
+  .legend-line.thick { border-top: 4px solid #6366F1; }
+  .legend-line.medium { border-top: 3px solid #8B5CF6; }
+  .legend-line.thin { border-top: 2px solid #A78BFA; }
+  .legend-line.dashed { border-top: 2px dashed #94A3B8; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<div id="legend-info">
+  <div class="legend-card">
+    <h4>Feature Categories</h4>
+    <div class="legend-item"><div class="legend-dot" style="background:#EF4444;border:2px solid #DC2626"></div> Outcome (Diabetes)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3B82F6;border:2px solid #2563EB"></div> Metabolic Features</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#10B981;border:2px solid #059669"></div> Anthropometric Features</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#F59E0B;border:2px solid #D97706"></div> Demographic Features</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#8B5CF6;border:2px solid #7C3AED"></div> Genetic Feature</div>
+  </div>
+  <div class="legend-card">
+    <h4>Connection Strength</h4>
+    <div class="legend-item"><div class="legend-line thick"></div> Strong relationship (r &gt; 0.45)</div>
+    <div class="legend-item"><div class="legend-line medium"></div> Moderate relationship (r = 0.25-0.45)</div>
+    <div class="legend-item"><div class="legend-line thin"></div> Weak relationship (r &lt; 0.25)</div>
+    <div class="legend-item"><div class="legend-line dashed"></div> Indirect / Mediated effect</div>
+  </div>
+  <div class="legend-card">
+    <h4>Scientific Basis</h4>
+    <div style="font-size:12px;color:#6B7280;line-height:1.6;">
+      Relationships derived from peer-reviewed studies on the Pima Indians Diabetes Dataset and clinical literature on Type 2 Diabetes pathophysiology. Edge widths reflect correlation magnitude; dashed lines indicate mediated or indirect associations.
+    </div>
+  </div>
+</div>
+<script>
+const chart = echarts.init(document.getElementById('chart'));
+
+// Feature categories
+const categories = [
+  { name: 'Outcome', itemStyle: { color: '#EF4444' } },
+  { name: 'Metabolic', itemStyle: { color: '#3B82F6' } },
+  { name: 'Anthropometric', itemStyle: { color: '#10B981' } },
+  { name: 'Demographic', itemStyle: { color: '#F59E0B' } },
+  { name: 'Genetic', itemStyle: { color: '#8B5CF6' } },
+];
+
+const nodes = [
+  // Central outcome node
+  { name: 'Diabetes\nOutcome', category: 0, symbolSize: 75,
+    itemStyle: { color: '#EF4444', borderColor: '#DC2626', borderWidth: 3, shadowBlur: 20, shadowColor: 'rgba(239,68,68,0.3)' },
+    label: { fontSize: 14, fontWeight: 'bold', color: '#FFFFFF' }
+  },
+  // Metabolic features
+  { name: 'Glucose', category: 1, symbolSize: 60,
+    itemStyle: { color: '#3B82F6', borderColor: '#2563EB', borderWidth: 2, shadowBlur: 12, shadowColor: 'rgba(59,130,246,0.25)' },
+    label: { fontSize: 13, fontWeight: 'bold', color: '#1E3A5F' }
+  },
+  { name: 'Insulin', category: 1, symbolSize: 48,
+    itemStyle: { color: '#60A5FA', borderColor: '#3B82F6', borderWidth: 2 },
+    label: { fontSize: 12, fontWeight: '600', color: '#1E3A5F' }
+  },
+  { name: 'Blood\nPressure', category: 1, symbolSize: 42,
+    itemStyle: { color: '#93C5FD', borderColor: '#60A5FA', borderWidth: 2 },
+    label: { fontSize: 11, color: '#1E3A5F' }
+  },
+  // Anthropometric features
+  { name: 'BMI', category: 2, symbolSize: 55,
+    itemStyle: { color: '#10B981', borderColor: '#059669', borderWidth: 2, shadowBlur: 10, shadowColor: 'rgba(16,185,129,0.25)' },
+    label: { fontSize: 13, fontWeight: 'bold', color: '#064E3B' }
+  },
+  { name: 'Skin\nThickness', category: 2, symbolSize: 40,
+    itemStyle: { color: '#6EE7B7', borderColor: '#34D399', borderWidth: 2 },
+    label: { fontSize: 11, color: '#064E3B' }
+  },
+  // Demographic features
+  { name: 'Age', category: 3, symbolSize: 48,
+    itemStyle: { color: '#F59E0B', borderColor: '#D97706', borderWidth: 2, shadowBlur: 10, shadowColor: 'rgba(245,158,11,0.25)' },
+    label: { fontSize: 13, fontWeight: '600', color: '#78350F' }
+  },
+  { name: 'Pregnancies', category: 3, symbolSize: 40,
+    itemStyle: { color: '#FCD34D', borderColor: '#F59E0B', borderWidth: 2 },
+    label: { fontSize: 12, color: '#78350F' }
+  },
+  // Genetic feature
+  { name: 'Diabetes\nPedigree', category: 4, symbolSize: 45,
+    itemStyle: { color: '#8B5CF6', borderColor: '#7C3AED', borderWidth: 2, shadowBlur: 10, shadowColor: 'rgba(139,92,246,0.25)' },
+    label: { fontSize: 12, fontWeight: '600', color: '#3B0764' }
+  },
+];
+
+// Links with relationship strengths based on scientific literature
+const links = [
+  // ===== Direct relationships to Outcome (Diabetes) =====
+  // Glucose → Outcome (strongest predictor, r ≈ 0.47)
+  { source: 'Glucose', target: 'Diabetes\nOutcome', value: 'Strong\n(r≈0.47)',
+    lineStyle: { width: 5.5, color: '#3B82F6', opacity: 0.85 },
+    label: { show: true, formatter: 'Strongest predictor', fontSize: 10, color: '#1E40AF', fontWeight: 'bold',
+      backgroundColor: 'rgba(239,246,255,0.9)', padding: [3,6], borderRadius: 3 }
+  },
+  // BMI → Outcome (r ≈ 0.29)
+  { source: 'BMI', target: 'Diabetes\nOutcome', value: 'Moderate\n(r≈0.29)',
+    lineStyle: { width: 3.5, color: '#10B981', opacity: 0.75 },
+    label: { show: true, formatter: 'Obesity risk', fontSize: 9, color: '#065F46',
+      backgroundColor: 'rgba(240,253,244,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // Age → Outcome (r ≈ 0.24)
+  { source: 'Age', target: 'Diabetes\nOutcome', value: 'Moderate\n(r≈0.24)',
+    lineStyle: { width: 3, color: '#F59E0B', opacity: 0.7 },
+    label: { show: true, formatter: 'Age-related risk', fontSize: 9, color: '#92400E',
+      backgroundColor: 'rgba(255,251,235,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // Diabetes Pedigree → Outcome (r ≈ 0.17)
+  { source: 'Diabetes\nPedigree', target: 'Diabetes\nOutcome', value: 'Weak-Moderate\n(r≈0.17)',
+    lineStyle: { width: 2.5, color: '#8B5CF6', opacity: 0.7 },
+    label: { show: true, formatter: 'Genetic susceptibility', fontSize: 9, color: '#5B21B6',
+      backgroundColor: 'rgba(245,243,255,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // Pregnancies → Outcome (r ≈ 0.22)
+  { source: 'Pregnancies', target: 'Diabetes\nOutcome', value: 'Weak-Moderate\n(r≈0.22)',
+    lineStyle: { width: 2.8, color: '#F59E0B', opacity: 0.65 },
+    label: { show: true, formatter: 'Gestational risk', fontSize: 9, color: '#92400E',
+      backgroundColor: 'rgba(255,251,235,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // Insulin → Outcome (r ≈ 0.13 via direct, but mediated through glucose)
+  { source: 'Insulin', target: 'Diabetes\nOutcome', value: 'Weak direct\n(r≈0.13)',
+    lineStyle: { width: 2, color: '#60A5FA', opacity: 0.55, type: 'dashed' },
+    label: { show: true, formatter: 'Insulin resistance', fontSize: 9, color: '#1E40AF',
+      backgroundColor: 'rgba(239,246,255,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // BloodPressure → Outcome (r ≈ 0.07, weakest direct)
+  { source: 'Blood\nPressure', target: 'Diabetes\nOutcome', value: 'Weak\n(r≈0.07)',
+    lineStyle: { width: 1.5, color: '#93C5FD', opacity: 0.45, type: 'dashed' },
+    label: { show: true, formatter: 'Comorbidity', fontSize: 9, color: '#1E40AF',
+      backgroundColor: 'rgba(239,246,255,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // SkinThickness → Outcome (r ≈ 0.07)
+  { source: 'Skin\nThickness', target: 'Diabetes\nOutcome', value: 'Weak\n(r≈0.07)',
+    lineStyle: { width: 1.5, color: '#6EE7B7', opacity: 0.45, type: 'dashed' },
+  },
+
+  // ===== Inter-feature relationships =====
+  // Glucose ↔ Insulin (glucose-insulin axis, r ≈ 0.33)
+  { source: 'Glucose', target: 'Insulin', value: 'Glucose-Insulin axis\n(r≈0.33)',
+    lineStyle: { width: 3.5, color: '#6366F1', opacity: 0.6 },
+    label: { show: true, formatter: 'Glucose-Insulin\nfeedback', fontSize: 9, color: '#4338CA',
+      backgroundColor: 'rgba(238,242,255,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // BMI ↔ SkinThickness (body adiposity, r ≈ 0.39)
+  { source: 'BMI', target: 'Skin\nThickness', value: 'Adiposity markers\n(r≈0.39)',
+    lineStyle: { width: 4, color: '#059669', opacity: 0.6 },
+    label: { show: true, formatter: 'Adiposity\nmarkers', fontSize: 9, color: '#065F46',
+      backgroundColor: 'rgba(240,253,244,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // BMI ↔ BloodPressure (obesity-hypertension, r ≈ 0.28)
+  { source: 'BMI', target: 'Blood\nPressure', value: 'Obesity-hypertension\n(r≈0.28)',
+    lineStyle: { width: 3, color: '#059669', opacity: 0.5 },
+    label: { show: true, formatter: 'Obesity-\nhypertension', fontSize: 9, color: '#065F46',
+      backgroundColor: 'rgba(240,253,244,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // BMI ↔ Insulin (insulin resistance, r ≈ 0.23)
+  { source: 'BMI', target: 'Insulin', value: 'Insulin resistance\n(r≈0.23)',
+    lineStyle: { width: 2.8, color: '#6366F1', opacity: 0.5 },
+    label: { show: true, formatter: 'Insulin\nresistance', fontSize: 9, color: '#4338CA',
+      backgroundColor: 'rgba(238,242,255,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // Age ↔ BloodPressure (BP increases with age, r ≈ 0.24)
+  { source: 'Age', target: 'Blood\nPressure', value: 'Age-related BP rise\n(r≈0.24)',
+    lineStyle: { width: 2.8, color: '#D97706', opacity: 0.5 },
+    label: { show: true, formatter: 'Age-related\nBP rise', fontSize: 9, color: '#92400E',
+      backgroundColor: 'rgba(255,251,235,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // Age ↔ Pregnancies (older = more pregnancies, r ≈ 0.54)
+  { source: 'Age', target: 'Pregnancies', value: 'Age-parity\n(r≈0.54)',
+    lineStyle: { width: 5, color: '#D97706', opacity: 0.55 },
+    label: { show: true, formatter: 'Age-parity\nlink', fontSize: 9, color: '#92400E',
+      backgroundColor: 'rgba(255,251,235,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // Age ↔ Glucose (glucose intolerance with age, r ≈ 0.26)
+  { source: 'Age', target: 'Glucose', value: 'Age-glucose intolerance\n(r≈0.26)',
+    lineStyle: { width: 3, color: '#D97706', opacity: 0.45 },
+    label: { show: true, formatter: 'Glucose\nintolerance', fontSize: 9, color: '#92400E',
+      backgroundColor: 'rgba(255,251,235,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // Pregnancies ↔ Glucose (gestational diabetes, r ≈ 0.13)
+  { source: 'Pregnancies', target: 'Glucose', value: 'Gestational diabetes\n(r≈0.13)',
+    lineStyle: { width: 2, color: '#D97706', opacity: 0.4, type: 'dashed' },
+    label: { show: true, formatter: 'Gestational\ndiabetes', fontSize: 9, color: '#92400E',
+      backgroundColor: 'rgba(255,251,235,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // SkinThickness ↔ Insulin (subcutaneous fat & insulin, r ≈ 0.44)
+  { source: 'Skin\nThickness', target: 'Insulin', value: 'Subcut. fat-insulin\n(r≈0.44)',
+    lineStyle: { width: 4, color: '#6366F1', opacity: 0.55 },
+    label: { show: true, formatter: 'Subcut. fat\n& insulin', fontSize: 9, color: '#4338CA',
+      backgroundColor: 'rgba(238,242,255,0.9)', padding: [2,5], borderRadius: 3 }
+  },
+  // Glucose ↔ BMI (obesity drives hyperglycemia, r ≈ 0.22)
+  { source: 'Glucose', target: 'BMI', value: 'Obesity-hyperglycemia\n(r≈0.22)',
+    lineStyle: { width: 2.5, color: '#6366F1', opacity: 0.45, type: 'dashed' },
+  },
+  // Diabetes Pedigree ↔ Glucose (genetic predisposition to hyperglycemia, r ≈ 0.13)
+  { source: 'Diabetes\nPedigree', target: 'Glucose', value: 'Genetic hyperglycemia\n(r≈0.13)',
+    lineStyle: { width: 2, color: '#7C3AED', opacity: 0.4, type: 'dashed' },
+  },
+  // Age ↔ BMI (age-related weight change, r ≈ 0.04)
+  { source: 'Age', target: 'BMI', value: 'Age-weight\n(r≈0.04)',
+    lineStyle: { width: 1.2, color: '#94A3B8', opacity: 0.3, type: 'dashed' },
+  },
+];
+
+const option = {
+  backgroundColor: '#F8FAFC',
+  title: {
+    text: 'Diabetes Feature Relationship Model',
+    subtext: 'Pima Indians Diabetes Dataset — Based on Scientific Literature & Correlation Analysis',
+    left: 32, top: 20,
+    textStyle: { fontSize: 22, fontWeight: 'bold', color: '#1E293B', fontFamily: 'Segoe UI, system-ui, sans-serif' },
+    subtextStyle: { fontSize: 13, color: '#64748B', lineHeight: 20 },
+  },
+  tooltip: {
+    trigger: 'item',
+    backgroundColor: '#1E293B',
+    borderColor: '#334155',
+    borderWidth: 1,
+    textStyle: { color: '#F1F5F9', fontSize: 12 },
+    formatter: function(params) {
+      if (params.dataType === 'edge') {
+        return `<b>${params.data.source.replace(/\n/g,' ')} ↔ ${params.data.target.replace(/\n/g,' ')}</b><br/>${params.data.value || ''}`;
+      }
+      const catNames = ['Outcome', 'Metabolic', 'Anthropometric', 'Demographic', 'Genetic'];
+      const cat = catNames[params.data.category];
+      return `<b>${params.name.replace(/\n/g,' ')}</b><br/>Category: ${cat}`;
+    }
+  },
+  legend: [{
+    data: categories.map(c => c.name),
+    top: 24, right: 32,
+    orient: 'vertical',
+    textStyle: { color: '#475569', fontSize: 12 },
+    itemWidth: 14, itemHeight: 14,
+  }],
+  series: [{
+    type: 'graph',
+    layout: 'force',
+    force: {
+      repulsion: 450,
+      gravity: 0.08,
+      edgeLength: [120, 260],
+      layoutAnimation: true,
+      friction: 0.6,
+    },
+    roam: true,
+    draggable: true,
+    data: nodes,
+    links: links,
+    categories: categories,
+    label: {
+      show: true,
+      position: 'bottom',
+      fontSize: 12,
+      fontFamily: 'Segoe UI, system-ui, sans-serif',
+      distance: 8,
+    },
+    lineStyle: {
+      curveness: 0.25,
+    },
+    emphasis: {
+      focus: 'adjacency',
+      lineStyle: { width: 4 },
+      itemStyle: { shadowBlur: 25 },
+    },
+    edgeSymbol: ['none', 'arrow'],
+    edgeSymbolSize: [0, 8],
+    animationDuration: 1200,
+    animationEasingUpdate: 'quinticInOut',
+  }]
+};
+
+chart.setOption(option);
+window.addEventListener('resize', () => chart.resize());
+</script>
+</body>
+</html>
