@@ -1,6 +1,6 @@
 <div align="center">
 
-# preDiabt: Diabetes Prediction
+# preDiabet: Diabetes Prediction
 
 **ML · Neural Networks · Attention-Based Architectures**
 
@@ -39,7 +39,7 @@ The **Pima Indians Diabetes Dataset** (768 female patients, NIDDK) provides a un
 ## Pipeline
 
 <div align="center">
-<img src="readme_pipeline.png" width="900">
+<img src="assets/readme_pipeline.png" width="900">
 </div>
 
 ---
@@ -81,7 +81,7 @@ Before training, we explored the scientific relationships between features using
 #### Network Relationship Graph
 
 <div align="center">
-<img src="diabetes_relationship_model.png" width="800">
+<img src="assets/diabetes_relationship_model.png" width="800">
 </div>
 
 *Interactive version: [diabetes_relationship_model.html](diabetes_relationship_model.html) — drag nodes, hover for details*
@@ -97,7 +97,7 @@ This force-directed network maps all 19 significant pairwise relationships. Key 
 #### Correlation Heatmap
 
 <div align="center">
-<img src="diabetes_correlation_heatmap.png" width="600">
+<img src="assets/diabetes_correlation_heatmap.png" width="600">
 </div>
 
 The red-bordered row/column highlights Outcome correlations:
@@ -109,7 +109,7 @@ The red-bordered row/column highlights Outcome correlations:
 #### Pathophysiological Pathway Analysis
 
 <div align="center">
-<img src="diabetes_pathway_analysis.png" width="850">
+<img src="assets/diabetes_pathway_analysis.png" width="850">
 </div>
 
 Three major pathophysiological pathways to diabetes:
@@ -213,13 +213,13 @@ Input(12) -> FeatureEmbed(64) -> BatchNorm -> ReLU
 #### Performance Comparison Chart
 
 <div align="center">
-<img src="readme_model_comparison.png" width="850">
+<img src="assets/readme_model_comparison.png" width="850">
 </div>
 
 #### Radar Chart — Top 4 Models
 
 <div align="center">
-<img src="readme_radar_comparison.png" width="500">
+<img src="assets/readme_radar_comparison.png" width="500">
 </div>
 
 The radar chart reveals each top model's strength profile:
@@ -231,7 +231,7 @@ The radar chart reveals each top model's strength profile:
 #### Feature Importance
 
 <div align="center">
-<img src="readme_feature_importance.png" width="800">
+<img src="assets/readme_feature_importance.png" width="800">
 </div>
 
 Across all three ensemble models, **Glucose dominates** as the most important feature (25-28% importance), followed by **BMI** (16-17%) and **Age** (13-14%). The engineered interaction features `Glucose×BMI` and `Insulin/Glucose` also contribute meaningfully, validating the clinical hypothesis that feature interactions carry predictive signal beyond individual measurements.
@@ -239,7 +239,7 @@ Across all three ensemble models, **Glucose dominates** as the most important fe
 #### Training Curves
 
 <div align="center">
-<img src="readme_training_curves.png" width="850">
+<img src="assets/readme_training_curves.png" width="850">
 </div>
 
 Both neural networks converge efficiently with early stopping:
@@ -284,19 +284,20 @@ All results are exported to two Excel workbooks for reproducibility:
 
 ```
 diabetes-prediction/
-├── diabetes_ml_models.txt              # Main pipeline script
-├── diabetes_relationship_model.png     # Feature relationship network graph
-├── diabetes_relationship_model.html    # Interactive version (browser)
-├── diabetes_correlation_heatmap.png    # Pearson correlation matrix
-├── diabetes_pathway_analysis.png       # Pathophysiological pathways
-├── readme_model_comparison.png         # Model performance bar chart
-├── readme_radar_comparison.png         # Top-4 radar chart
-├── readme_feature_importance.png       # Feature importance across models
-├── readme_training_curves.png          # NN training loss curves
-├── readme_pipeline.png                 # Pipeline flowchart
-├── diabetes_model_performance.xlsx     # Metrics & evaluation reports
-├── diabetes_model_parameters.xlsx      # Parameters & training history
-└── README.md                           # This file
+├── README.md                              # This file
+├── diabetes_ml_models.txt                 # Main pipeline script
+├── diabetes_model_performance.xlsx        # Metrics & evaluation reports
+├── diabetes_model_parameters.xlsx         # Parameters & training history
+├── diabetes_relationship_model.html       # Interactive network graph (browser)
+└── assets/
+    ├── diabetes_relationship_model.png    # Feature relationship network
+    ├── diabetes_correlation_heatmap.png   # Pearson correlation matrix
+    ├── diabetes_pathway_analysis.png      # Pathophysiological pathways
+    ├── readme_pipeline.png                # Pipeline flowchart
+    ├── readme_model_comparison.png        # Model performance bars
+    ├── readme_radar_comparison.png        # Top-4 radar chart
+    ├── readme_feature_importance.png      # Feature importance bars
+    └── readme_training_curves.png         # NN training loss curves
 ```
 
 ---
