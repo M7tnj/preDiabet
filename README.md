@@ -1,6 +1,6 @@
 <div align="center">
 
-# Diabetes Prediction
+# preDiabet
 
 **ML · Neural Networks · Attention-Based Architectures**
 
