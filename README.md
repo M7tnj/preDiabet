@@ -84,7 +84,7 @@ Before training, we explored the scientific relationships between features using
 <img src="assets/diabetes_relationship_model.png" width="800">
 </div>
 
-*Interactive version: [diabetes_relationship_model.html](diabetes_relationship_model.html) — drag nodes, hover for details*
+*Interactive version: [diabetes_relationship_model.html](assets/diabetes_relationship_model.html) — drag nodes, hover for details*
 
 This force-directed network maps all 19 significant pairwise relationships. Key observations:
 
